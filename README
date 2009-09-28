@@ -1,0 +1,24 @@
+
+
+A simple self contained routine that will enable a QTE app to rotate
+the screen depending on orientation
+
+To use...
+#include "rotate.h"
+
+// create an instance of RotateHelper
+
+RotateHelper *rh= new RotateHelper();
+
+// then start it off..
+
+rh->start(); // the default sample rate is 500ms
+
+// to stop it...
+rh->stop();
+
+// to restore to upright...
+rh->restore();
+
+The only files you need to put in your project are rotate.h and rotate.cpp
+

@@ -1,0 +1,13 @@
+*.asv
+*.bak
+.qmake.cache
+Makefile
+Makefile.target
+qtgps.pro.cache
+runqvfb
+unpack
+.moc
+.obj
+.ui
+.uic
+.emacs.desktop
