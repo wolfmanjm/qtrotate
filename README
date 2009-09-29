@@ -20,5 +20,18 @@ rh->stop();
 // to restore to upright...
 rh->restore();
 
+// to see if the current orientation is landscape...
+rh->isLandscape();
+
+// to get a signal when the screen orientation changes...
+connect(rotate, SIGNAL(rotated(bool)), this, SLOT(rotated(bool)));
+
+// Then the slot rotated(bool landscape) will be called with true if the new orientation is landscape
+
 The only files you need to put in your project are rotate.h and rotate.cpp
+
+You can always get the current rotation in degrees using Qte...
+
+QValueSpaceItem vsiRot("/UI/Rotation/Current");
+int rotation_in_degrees= vsiRot.value().toUInt();
 

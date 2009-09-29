@@ -29,9 +29,13 @@ class RotateHelper : public QObject
 	void start(int timerms= 500);
 	void stop();
 	void restore();
+	bool isLandscape();
 
  private slots:
 	void sample();
+
+signals:
+     void rotated(bool landscape);
 
  private:
 	void maybe_rotate(int deg);

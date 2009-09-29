@@ -34,6 +34,7 @@ private slots:
     void on_StopButton_clicked();
 	void on_StartButton_clicked();
 	void on_RestoreButton_clicked();
+	void rotated(bool landscape);
 
  private:
 	RotateHelper *rotate;

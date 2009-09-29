@@ -37,6 +37,7 @@ Example::Example(QWidget *parent, Qt::WFlags f) : QWidget(parent, f)
     QSoftMenuBar::setHelpEnabled(this, false);
 	
 	rotate= new RotateHelper(this);
+	connect(rotate, SIGNAL(rotated(bool)), this, SLOT(rotated(bool)));
 }
 
 /*
@@ -62,3 +63,9 @@ void Example::on_RestoreButton_clicked()
 {
 	rotate->restore();
 }
+
+void Example::rotated(bool landscape)
+{
+	qDebug("screen rotated to: %s", (landscape ? "Landscape" : "Portrait"));
+}
+		   

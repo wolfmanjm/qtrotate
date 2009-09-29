@@ -62,6 +62,17 @@ RotateHelper::~RotateHelper()
 	stop();
 }
 
+// 90 degrees and 270 degrees is landscape
+#define IS_LANDSCAPE(d) (d == 90 || d == 270)
+
+// return true if currently in landscape orientation
+bool RotateHelper::isLandscape()
+{
+	QValueSpaceItem vsiRot("/UI/Rotation/Current");
+    int currot= vsiRot.value().toUInt();
+	return IS_LANDSCAPE(currot);
+}
+
 void RotateHelper::start(int timeinms)
 {
 	// remember where we were when we started
@@ -101,6 +112,7 @@ void RotateHelper::restore()
 		QtopiaServiceRequest svreq("RotationManager", "setCurrentRotation(int)");
 		svreq << initial_rotation;
 		svreq.send();
+		emit rotated(IS_LANDSCAPE(initial_rotation));
 	}
 }
 
@@ -113,6 +125,7 @@ void RotateHelper::maybe_rotate(int deg)
 		QtopiaServiceRequest svreq("RotationManager", "setCurrentRotation(int)");
 		svreq << deg;
 		svreq.send();
+		emit rotated(IS_LANDSCAPE(deg));
 	}
 }
 
