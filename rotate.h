@@ -59,6 +59,7 @@ class RotateHelper : public QObject
 	int current_pos;
 	int event3;
 	int debug;
+	int initial_rotation;
 	ushort skip_zero;
 };
 #endif

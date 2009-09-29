@@ -54,6 +54,7 @@ RotateHelper::RotateHelper(QObject *parent, int dflg) : QObject(parent)
 	event3 = -1;
 	debug = dflg;
 	skip_zero = 1;
+	initial_rotation= -1;
 }
 
 RotateHelper::~RotateHelper()
@@ -63,7 +64,17 @@ RotateHelper::~RotateHelper()
 
 void RotateHelper::start(int timeinms)
 {
-	// start up a timer to check accelerometers
+	// remember where we were when we started
+	QValueSpaceItem vsiRot("/UI/Rotation/Current");
+    initial_rotation= vsiRot.value().toUInt();
+	
+	// don't allow multiple timers to run
+	if(timer != NULL){
+		stop();
+	}
+
+	// start up a single shot timer to check accelerometers
+	// it will be restarted each time
 	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(sample()));
 	timer->start(timeinms);
@@ -76,13 +87,21 @@ void RotateHelper::stop()
 		delete timer;
 		timer= NULL;
 	}
+
+	if(event3 != -1){
+		close(event3);
+		event3= -1;
+	}
 }
 
+// restore to whatever the rotation was when we started
 void RotateHelper::restore()
 {
-    QtopiaServiceRequest svreq("RotationManager", "setCurrentRotation(int)");
-    svreq << 0;
-    svreq.send();
+	if(initial_rotation != -1){
+		QtopiaServiceRequest svreq("RotationManager", "setCurrentRotation(int)");
+		svreq << initial_rotation;
+		svreq.send();
+	}
 }
 
 void RotateHelper::maybe_rotate(int deg)
@@ -91,7 +110,6 @@ void RotateHelper::maybe_rotate(int deg)
     int currot= vsiRot.value().toUInt();
 
     if(deg != currot){
-		qDebug("Rotate: %d", deg);
 		QtopiaServiceRequest svreq("RotationManager", "setCurrentRotation(int)");
 		svreq << deg;
 		svreq.send();
@@ -222,7 +240,7 @@ bool RotateHelper::packet_reader()
 		event3 = open(EVENT_PATH, O_RDONLY);
 
 		if (event3 < 0){
-			qDebug("Can't open '%s': %s\n", EVENT_PATH, strerror(errno));
+			qWarning("Can't open '%s': %s\n", EVENT_PATH, strerror(errno));
 			return false;
 		}
 		qDebug("Opened: %s", EVENT_PATH);
