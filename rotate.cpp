@@ -8,7 +8,10 @@
 /**
  * The acceleromer algorithms and code taken from omnewrotate-0.5.4
  * Copyright © 2008 Rui Miguel Silva Seabra <rms@1407.org>
- *
+ * 
+ * Ported to qtextended by Jim Morris (morris@wolfman.com, http://blog.wolfman.com)
+ * Source on http://github.com/wolfmanjm/qtrotate
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
